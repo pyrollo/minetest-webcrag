@@ -1,0 +1,96 @@
+
+body { background:#fff; font-family:sans-serif; font-size:11px; margin-left:20px; margin-right:20px; }
+h1 { font-family:sans-serif; font-size:20px; font-weight:400; border-bottom:solid 1px #AAA; }
+h2 { font-family:sans-serif; font-size:16px; font-weight:400; border-bottom:solid 1px #AAA; }
+h3 { }
+
+div.debug { position:abZsolute; }
+
+div.itemdescription {
+	float:right;
+	background-color:#ffffff;
+	padding-left:20px;
+}
+
+table {
+	background:#f9f9f9;
+	border-collapse:collapse;
+}
+
+th {
+	background-color:#f2f2f2;
+	border:solid 1px #aaa;
+	padding:3px;
+}
+
+td {
+	border:solid 1px #aaa;
+	padding:3px;
+}
+
+div.itemicon {
+	width: 32px; 
+	height: 32px;
+	margin: 3px; 
+	position:relative;
+	border:1px solid #333;
+	display:inline-block;
+	background-color: #888;
+}
+
+img.itemicon {
+	width: 32px; 
+	height: 32px;	
+}
+
+div.itemiconqty {
+ 	color:white; 
+	font-family:sans-serif; 
+	font-size:10px; 
+	font-weight:600;
+	text-shadow:1px 1px black;
+	position:absolute; 
+	bottom:0px; 
+	right:2px;"
+}
+
+div.itemicongroup {
+ 	color:#ff4; 
+	font-family:sans-serif; 
+	font-size:10px; 
+	font-weight:600;
+	text-shadow:1px 1px black;
+	position:absolute; 
+	bottom:0px; 
+	left:2px;
+}
+
+div.item {
+	width:200px;
+	height:40px;
+	display:inline-block;
+}
+
+div.itemdesc {
+	display:inline-block;
+	vertical-align:middle;
+	height:100%;
+	width:150px;
+}
+
+a {text-decoration:none; color:#0645AD; }
+a:visited {color:#0b0080; }
+
+table { font-size:11px; border:none;}
+
+div.craft { background-color: #555; border:solid 1px black; width:240px; height:134px; position:relative; margin-bottom:10px;}
+div.craftinput { position:absolute; top:0; left:0; width:130px; height:100%;
+text-align:center; vertical-align:middle; }
+div.craftinput table { background:inherit; margin:3px; }
+div.craftinput table td { border:none; padding:0;}
+div.craftmethod { font-size:10px; color:white; text-align:center; 
+width:55px; height:80%; 
+position:absolute; left:131px; top:10%;
+}
+div.craftoutput { position:absolute; top:47px; right:10px; }
+
