@@ -3,7 +3,7 @@
 $wwwimgpath = realpath('img');
 
 $maxsize = 128;
-$sizes = array( 32, 64, 128 );
+$sizes = array( 32, 128 );
 
 function list_images($images) {
 	$ret = array();

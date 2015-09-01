@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-$mtimgpath = realpath($exportdir.'/img');
+$mtimgpath = realpath($exportdir.'/textures');
 $mtdata = json_decode(file_get_contents($exportdir.'/mtdata.json'), true);
 
 include 'image.php';
@@ -213,26 +213,13 @@ function render_item_index() {
 	global $mtdata;
 	$ret = "<h1>Item index</h1>";
 	foreach ($mtdata['items'] as $name => $item){
-		if ($item['description'] && $name != 'air') {
+		if ($item['description'] 
+			&& $name != 'air'
+			&& !array_key_exists('not_in_creative_inventory', $item['groups'])) {
 			$ret.= render_item($name);
 		}
 	}
 	return $ret;
-}
-
-
-function mytest() {
-	$mtimgpath = realpath('mtdata/img');
-	$wwwimgpath = realpath('img');	
-	prepare_bloc_image(
-		'default_stone.png',
-		'default_stone.png',
-		'default_stone.png',
-		'default_stone.png',
-		'default_stone.png',
-		'default_stone.png',
-		'test.png');
-	return '<p><img src="img/test.png"/ border=1></p>';
 }
 
 $q=$_GET["q"];

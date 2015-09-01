@@ -4,7 +4,6 @@ by P.Y. Rollo dev@pyrollo.com
 
 Distributed under the terms of the GNU General Public License v3
 ]]--
-print(dump(minetest))
 
 local modpath = minetest.get_modpath("webcrag")
 
@@ -12,27 +11,6 @@ local modpath = minetest.get_modpath("webcrag")
 dofile(modpath.."/config.lua")
 
 datafile = "mtdata.json"
-
-function copy_file(src, dest)
-    local size = 2^13       -- 8K buffer
-	local s = io.open(src,"r")
-
-	if s == nil then return false end
-
-	local t = assert(io.open(dest,"w"))
-
-	if t == nil then io.close(s) return false end
-
-	while true do
-		local block = s:read(size)
-		if not block then break end
-		t:write(block)
-	end
-
-	io.close(s) 
-	io.close(t) 
-	return true
-end
 
 function convert_craft(craft)
 	local ret = {}
@@ -70,28 +48,6 @@ function webcrag_export()
 
 	local export_start = os.clock()
 
-	local function copy_image(mod, name)
-		local function try(path)
-			if copy_file(path, webcrag_exportdir.."img/"..name) then
-				copiedimages[name] = path
- 				return true
-			end
-			return false
-		end
-
-		for part in name:gmatch("[^/^]*") do
-			if part ~= '' then 
-				if copiedimages[part] == nil then
-					if not try(minetest.get_modpath(mod).."/textures/"..part) then
-						if not try(minetest.get_modpath("default").."/textures/"..part) then
-							print (("[webcrag] unable to copy image %s."):format(part));
-						end
-					end
-				end
-			end
-		end
-	end 
-
 	local function register_item(name) 
 		if export.items[name] == nil then
 			nitems = nitems + 1
@@ -112,13 +68,22 @@ function webcrag_export()
 
 	print ("[webcrag] Starting data eport")
 
-	os.execute("mkdir -p "..webcrag_exportdir.."img/")
 
 	export.items = {}
 	export.groups = {}
 
+	-- Copy textures
+	os.execute("mkdir -p "..webcrag_exportdir.."textures/")
+
+	for _, name in ipairs(minetest.get_modnames()) do
+		os.execute("cp -u "..minetest.get_modpath(name).."/textures/* "..webcrag_exportdir.."/textures/ > /dev/null 2>&1") 
+	end
+
+ 	-- Export item data
+
 	for name, data in pairs(minetest.registered_items) do
 	    if not (data.type == "none" or name == "ignore" or name == "air") then
+
 			register_item(name)
 			export.items[name].name = data.name
 			export.items[name].type = data.type
@@ -132,31 +97,10 @@ function webcrag_export()
 				table.insert(export.groups[group].items, name)
 			end 
 
-			-- Copy images
-			if data.inventory_image ~= nil and data.inventory_image ~= "" then
-				if type(data.inventory_image) == 'string' then
-					for part in data.inventory_image:gmatch("[^/^]*") do 
-						if part ~= '' then 
-							copy_image(export.items[name].mod, part) 
-						end
-					end
-				end
-			else
-				if data.tiles ~= nil then
-					for _,tile in pairs(data.tiles) do
-						if type(tile) == 'string' then
-							for part in tile:gmatch("[^/^]*") do 
-								if part ~= '' then 
-									copy_image(export.items[name].mod, part) 
-								end
-							end
-						end
-					end
-				end
-			end
-
+			-- Display
 			export.items[name].inventory_image = data.inventory_image
 			export.items[name].tiles = data.tiles
+			export.items[name].node_box = data.node_box
 
 			-- Crafts
 			local crafts = minetest.get_all_craft_recipes(name)
